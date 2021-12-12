@@ -1,0 +1,331 @@
+﻿<Window x:Class="AlgorithmVisualization.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AlgorithmVisualization"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
+        mc:Ignorable="d"
+        Title="Leonid Zaytsev, IVB-811" Height="900" Width="1200"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        Icon="Textures/train.png">
+
+    <Window.Resources>
+        <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource MaterialDesignTextBox}">
+            <Setter Property="Margin" Value="0,8"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="{x:Type PasswordBox}" BasedOn="{StaticResource MaterialDesignPasswordBox}">
+            <Setter Property="Margin" Value="0,8"/>
+        </Style>
+
+        <Style TargetType="{x:Type Viewbox}">
+            <Setter Property="Width" Value="18"/>
+            <Setter Property="Height" Value="18"/>
+            <Setter Property="Margin" Value="0 0 8 0"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+    </Window.Resources>
+
+    <materialDesign:DialogHost Identifier="RootDialog">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <materialDesign:ColorZone
+                        Padding="16"
+                        materialDesign:ShadowAssist.ShadowDepth="Depth2"
+                        Mode="PrimaryMid">
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="22"
+                    Text="2Q Algorithm Implementation"/>
+            </materialDesign:ColorZone>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.25*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+
+                <Grid.Background>
+                    <ImageBrush ImageSource="/Textures/background1.jpg" Stretch="UniformToFill"/>
+                </Grid.Background>
+
+                <Border
+                        BorderThickness="0 0 2 0"
+                        BorderBrush="{DynamicResource MaterialDesignDivider}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <materialDesign:Card
+                            Background="{DynamicResource MaterialDesignTextFieldBoxBackground}"
+                            Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                            Margin="20"
+                            Height="Auto"
+                            Width="Auto"
+                            Padding="10">
+                            <Grid x:Name="addDataPanel">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBox x:Name="keyTextBox" Margin="20"
+                                    wpf:HintAssist.Hint="Data Key"
+                                    materialDesign:TextFieldAssist.HasClearButton="True"
+                                    materialDesign:HintAssist.IsFloating="True"
+                                    materialDesign:ValidationAssist.OnlyShowOnFocus="True"
+                                    materialDesign:ValidationAssist.Background="IndianRed"
+                                    materialDesign:ValidationAssist.HasError="False"
+                                    FontSize="14" Cursor="IBeam"
+                                    VerticalAlignment="Center">
+                                    <TextBox.Text>
+                                        <Binding Path="Key" UpdateSourceTrigger="PropertyChanged" ValidatesOnDataErrors="False">
+                                            <Binding.ValidationRules>
+                                                <local:KeyValidationRule ValidatesOnTargetUpdated="False" />
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </TextBox.Text>
+                                </TextBox>
+                                <materialDesign:PackIcon
+                                    Kind="Key"
+                                    Margin="4,0,0,0"
+                                    VerticalAlignment="Center"
+                                    Foreground="{Binding ElementName=keyTextBox, Path=BorderBrush}"/>
+                                <TextBox x:Name="dataTextBox" Grid.Row="1" Margin="20"
+                                    materialDesign:HintAssist.Hint="Data" MaxLength="30"
+                                    materialDesign:HintAssist.HelperText="Cache data"
+                                    materialDesign:TextFieldAssist.HasClearButton="True"
+                                    materialDesign:HintAssist.IsFloating="True"
+                                    materialDesign:ValidationAssist.OnlyShowOnFocus="True"
+                                    materialDesign:ValidationAssist.Background="IndianRed"
+                                    FontSize="14" Cursor="IBeam">
+                                    <TextBox.Text>
+                                        <Binding Path="Data" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
+                                            <Binding.ValidationRules>
+                                                <local:DataValidationRule ValidatesOnTargetUpdated="False" />
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </TextBox.Text>
+                                </TextBox>
+                                <materialDesign:PackIcon Grid.Row="1" VerticalAlignment="Center"
+                                    Kind="DataMatrix"
+                                    Margin="4 0 4 0"
+                                    Foreground="{Binding ElementName=dataTextBox, Path=BorderBrush}"/>
+                                <Button Name="addDataButton" Content="Add data" Grid.Row="2" Margin="5"
+                                        Click="addDataButton_Click" Cursor="Hand">
+                                </Button>
+                            </Grid>
+                        </materialDesign:Card>
+                        <materialDesign:Card Grid.Row="1"
+                            Background="{DynamicResource MaterialDesignTextFieldBoxBackground}"
+                            Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                            Margin="20"
+                            Height="Auto"
+                            Width="Auto"
+                            Padding="10">
+                            <Grid x:Name="getDataPanel">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <ComboBox Margin="20"
+                                    x:Name="keyComboBox"
+                                    materialDesign:HintAssist.Hint="Key"
+                                    VerticalAlignment="Center"
+                                    materialDesign:ColorZoneAssist.Mode="PrimaryLight"
+                                    FontSize="20">
+                                </ComboBox>
+
+                                <materialDesign:PackIcon
+                                    Kind="Key"
+                                    Margin="4,0,0,0"
+                                    VerticalAlignment="Center"
+                                    Foreground="{Binding ElementName=keyTextBox, Path=BorderBrush}"/>
+                                <Button Name="getDataButton" Content="Get data" Grid.Row="1" Margin="5"
+                                        Command="{Binding RunGetDataComboBoxCommand}" CommandParameter="{Binding ElementName=keyComboBox, Path=SelectedItem.Content}"
+                                        Cursor="Hand" Click="GetDataButton_Click"/>
+                            </Grid>
+                        </materialDesign:Card>
+                        <materialDesign:Card Grid.Row="2"
+                            Background="{DynamicResource MaterialDesignTextFieldBoxBackground}"
+                            Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                            Margin="20"
+                            Height="Auto"
+                            Width="Auto"
+                            Padding="10">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <materialDesign:ColorZone
+                                        Padding="5"
+                                        materialDesign:ShadowAssist.ShadowDepth="Depth5"
+                                        Mode="PrimaryMid">
+                                    <TextBlock
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        FontSize="16"
+                                        Text="Last removed element"/>
+                                </materialDesign:ColorZone>
+                                <Button Name="lastRemovedButton" Content="NULL" Grid.Row="1" Margin="5" Width="128"
+                                        Command="{Binding RunDialogLastRemovedCommand}"
+                                        IsEnabled="False"
+                                        Cursor="Hand" Click="GetDataButton_Click"/>
+                            </Grid>
+                        </materialDesign:Card>
+                    </Grid>
+                </Border>
+
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition Height="0.15*"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0" x:Name="hotQGrid">
+                        <materialDesign:Card
+                                Background="{DynamicResource MaterialDesignTextFieldBoxBackground}"
+                                Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                                Margin="20" Padding="10"
+                                Height="Auto" Width="Auto">
+                            <StackPanel Orientation="Vertical">
+                                <materialDesign:ColorZone Padding="5"
+                                        materialDesign:ShadowAssist.ShadowDepth="Depth5"
+                                        Mode="PrimaryMid" Opacity="0.65">
+                                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                                        FontSize="22" Text="HotQ Data"/>
+                                </materialDesign:ColorZone>
+                                <ScrollViewer
+                                    HorizontalScrollBarVisibility="Auto"
+                                    VerticalScrollBarVisibility="Disabled">
+                                    <StackPanel x:Name="hotQPanel" Margin="15"
+                                            Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                    </StackPanel>
+                                </ScrollViewer>
+                            </StackPanel>
+                        </materialDesign:Card>
+                    </Grid>
+
+                    <Border
+                        BorderThickness="0 2 0 0"
+                        BorderBrush="{DynamicResource MaterialDesignDivider}"
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Grid.ColumnSpan="2"/>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.6*"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <materialDesign:Card
+                                Background="{DynamicResource MaterialDesignTextFieldBoxBackground}"
+                                Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                                Margin="20"
+                                Height="Auto"
+                                Width="Auto"
+                                Padding="10">
+                            <StackPanel Orientation="Vertical">
+                                <materialDesign:ColorZone
+                                        Padding="5"
+                                        materialDesign:ShadowAssist.ShadowDepth="Depth5"
+                                        Mode="PrimaryMid"
+                                        Opacity="0.65">
+                                    <TextBlock
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        FontSize="22"
+                                        Text="InQ Data"/>
+                                </materialDesign:ColorZone>
+                                <ScrollViewer
+                                    HorizontalScrollBarVisibility="Auto"
+                                    VerticalScrollBarVisibility="Disabled">
+                                    <StackPanel x:Name="inQPanel" Margin="15"
+                                                Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                    </StackPanel>
+                                </ScrollViewer>
+                            </StackPanel>
+                        </materialDesign:Card>
+
+                        <Grid Grid.Column="1">
+                            <materialDesign:Card
+                                Background="{DynamicResource MaterialDesignTextFieldBoxBackground}"
+                                Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                                Margin="20"
+                                Height="Auto"
+                                Width="Auto"
+                                Padding="10">
+                                <StackPanel Orientation="Vertical">
+                                    <materialDesign:ColorZone
+                                        Padding="5"
+                                        materialDesign:ShadowAssist.ShadowDepth="Depth5"
+                                        Mode="PrimaryMid"
+                                        Opacity="0.65">
+                                        <TextBlock
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            FontSize="22"
+                                            Text="OutQ Data"/>
+                                    </materialDesign:ColorZone>
+                                    <ScrollViewer Style="{StaticResource MaterialDesignScrollViewer}"
+                                        HorizontalScrollBarVisibility="Auto"
+                                        VerticalScrollBarVisibility="Disabled">
+                                        <StackPanel x:Name="outQPanel" Margin="15"
+                                            Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                        </StackPanel>
+                                    </ScrollViewer>
+                                </StackPanel>
+                            </materialDesign:Card>
+                        </Grid>
+                    </Grid>
+                    <Border
+                            BorderThickness="0 2 0 0"
+                            BorderBrush="{DynamicResource MaterialDesignDivider}"
+                            Grid.Row="2"/>
+                    <StackPanel Grid.Row="2" VerticalAlignment="Center" Margin="5" Orientation="Horizontal">
+                        <materialDesign:Chip
+                            Content="Last added element"
+                            IconBackground="LightGreen"
+                            IconForeground="{DynamicResource PrimaryHueDarkForegroundBrush}">
+                            <materialDesign:Chip.Icon>
+                                <materialDesign:PackIcon Kind="About"/>
+                            </materialDesign:Chip.Icon>
+                        </materialDesign:Chip>
+                        <materialDesign:Chip
+                            Content="Last received element"
+                            IconBackground="DeepSkyBlue"
+                            IconForeground="{DynamicResource PrimaryHueDarkForegroundBrush}">
+                            <materialDesign:Chip.Icon>
+                                <materialDesign:PackIcon Kind="About"/>
+                            </materialDesign:Chip.Icon>
+                        </materialDesign:Chip>
+                        <materialDesign:Chip
+                            Content="Last removed element"
+                            IconBackground="Red"
+                            IconForeground="{DynamicResource PrimaryHueDarkForegroundBrush}">
+                            <materialDesign:Chip.Icon>
+                                <materialDesign:PackIcon Kind="About"/>
+                            </materialDesign:Chip.Icon>
+                        </materialDesign:Chip>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Grid>
+    </materialDesign:DialogHost>
+</Window>

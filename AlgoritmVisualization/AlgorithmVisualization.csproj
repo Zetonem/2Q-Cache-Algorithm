@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MaterialDesignThemes" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LRUCache\LRUCache.csproj" />
+  </ItemGroup>
+
+    <ItemGroup>
+    <Resource Include="Textures\background.jpg" />
+    <Resource Include="Textures\background1.jpg" />
+    <Resource Include="Textures\train.png" />
+  </ItemGroup>
+
+</Project>
